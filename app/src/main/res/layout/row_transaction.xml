@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:background="@color/orange"
+    android:layout_margin="1dp"
+    android:background="@color/black"
     android:padding="10dp">
 
     <ImageView
         android:id="@+id/categoryIcon"
         android:layout_width="42dp"
         android:layout_height="42dp"
+        android:background="@drawable/border_background"
         android:layout_marginStart="8dp"
-        android:background="@color/black"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout3"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,9 +52,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/accounts_bg"
                 android:paddingLeft="5dp"
-                android:paddingTop="2dp"
                 android:paddingRight="5dp"
-                android:paddingBottom="2dp"
                 android:text="Cash"
                 android:textColor="@color/black" />
 

@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.emanager.R;
+
 import com.example.emanager.databinding.RowTransactionBinding;
+import com.example.emanager.models.Category;
 import com.example.emanager.models.Transactions;
+import com.example.emanager.utils.Constants;
 import com.example.emanager.utils.Helper;
 
 import java.util.ArrayList;
@@ -40,6 +42,17 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         holder.binding.accountLbl.setText((transaction.getAccount()));
 
         holder.binding.transactionDate.setText(Helper.formatDate(transaction.getDate()));
+        holder.binding.transactionCategory.setText(transaction.getCategory());
+
+        Category transactionsCategory = Constants.getCategory(transaction.getCategory());
+
+        holder.binding.categoryIcon.setImageResource(transactionsCategory.getCategoryImage());
+//        holder.binding.categoryIcon.setBackgroundTintList(context.getColorStateList(transactionsCategory.getCategoryColor()));
+
+        if (transaction.getType().equals(Constants.INCOME))
+            holder.binding.transactionAmount.setTextColor(context.getColor(R.color.greenColor));
+        else if (transaction.getType().equals(Constants.EXPENSE))
+        holder.binding.transactionAmount.setTextColor(context.getColor(R.color.redColor));
 
     }
 

@@ -120,11 +120,13 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/saveTransactionBtn"
+            android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/redColor"
+            android:clickable="true"
+            android:enabled="true"
             android:gravity="center"
             android:text="Save Transaction"
             android:textColor="@color/gold"
