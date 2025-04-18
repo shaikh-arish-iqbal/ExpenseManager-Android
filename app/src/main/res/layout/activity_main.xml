@@ -106,7 +106,7 @@
         android:orientation="horizontal"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf=" parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout">
 
         <LinearLayout
@@ -131,7 +131,7 @@
                 android:layout_marginTop="3dp"
                 android:gravity="center"
                 android:text="0.0"
-                android:textColor="#E53935" />
+                android:textColor="#43A047" />
         </LinearLayout>
 
         <LinearLayout
@@ -157,7 +157,7 @@
                 android:gravity="center"
                 android:shadowColor="#43A047"
                 android:text="0.0"
-                android:textColor="#43A047" />
+                android:textColor="#E53935" />
         </LinearLayout>
 
         <LinearLayout

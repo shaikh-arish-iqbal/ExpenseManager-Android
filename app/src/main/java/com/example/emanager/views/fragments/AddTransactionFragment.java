@@ -11,10 +11,12 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.emanager.R;
 import com.example.emanager.adapters.AccountsAdapter;
 import com.example.emanager.adapters.CategoryAdapter;
+import com.example.emanager.adapters.TransactionsAdapter;
 import com.example.emanager.databinding.FragmentAddTransactionBinding;
 import com.example.emanager.databinding.ListDialogBinding;
 import com.example.emanager.models.Account;
@@ -35,6 +37,11 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
     // Firebase Database References
     private FirebaseDatabase database;
     private DatabaseReference transactionsRef;
+
+    private DatabaseReference databaseReference;
+    private ArrayList<Transactions> transactionsList;
+    private TransactionsAdapter adapter;
+    private RecyclerView recyclerView;
 
 
     public AddTransactionFragment() {
@@ -126,9 +133,6 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
 
         // Save transaction data to Firebase when Save button is clicked
         binding.saveButton.setOnClickListener(v -> {
-            FirebaseDatabase.getInstance().getReference("testWrite").setValue("Hello World");
-
-            Toast.makeText(getContext(), "Save button clicked", Toast.LENGTH_SHORT).show();
 
             String date = binding.date.getText().toString();
             String amountStr = binding.amount.getText().toString();
@@ -160,7 +164,7 @@ public class AddTransactionFragment extends BottomSheetDialogFragment {
             }
 
             // Create a Transaction object
-            Transactions transaction = new Transactions(type, category, account, note, transactionDate, amount, System.currentTimeMillis());
+            Transactions transaction = new Transactions(type, category, account, note, transactionDate.getTime(), amount, System.currentTimeMillis());
 
             // Generate a unique ID for the transaction
             String transactionId = transactionsRef.push().getKey();

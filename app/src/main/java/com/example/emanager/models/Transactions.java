@@ -8,14 +8,14 @@ public class Transactions {
     private String category;
     private String account;
     private String note;
-    private Date date;
+    private long date; // changed from Date to long
     private double amount;
 
     public Transactions() {
-        // Empty constructor required for serialization or future database usage (Room/Firebase/etc.)
+        // Needed for Firebase
     }
 
-    public Transactions(String type, String category, String account, String note, Date date, double amount, long id) {
+    public Transactions(String type, String category, String account, String note, long date, double amount, long id) {
         this.type = type;
         this.category = category;
         this.account = account;
@@ -25,8 +25,7 @@ public class Transactions {
         this.id = id;
     }
 
-    // Getters and setters
-
+    // Getters and Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
@@ -42,8 +41,8 @@ public class Transactions {
     public String getNote() { return note; }
     public void setNote(String note) { this.note = note; }
 
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
+    public long getDate() { return date; }
+    public void setDate(long date) { this.date = date; }
 
     public double getAmount() { return amount; }
     public void setAmount(double amount) { this.amount = amount; }
