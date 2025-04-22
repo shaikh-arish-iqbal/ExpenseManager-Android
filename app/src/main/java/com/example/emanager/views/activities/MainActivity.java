@@ -1,5 +1,6 @@
 package com.example.emanager.views.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import com.example.emanager.models.Transactions;
 import com.example.emanager.utils.Constants;
 import com.example.emanager.utils.Helper;
 import com.example.emanager.views.fragments.AddTransactionFragment;
+import com.example.emanager.views.fragments.StatsFragment;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +46,25 @@ public class MainActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        binding.bottomNavigationView.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.transactions) {
+                // Launch MainActivity
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+            } else if (id == R.id.stats) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.ConstraintLayout, new StatsFragment())
+                        .commit();
+                updateToolbarTitle("Stats");
+
+            }
+
+            return true;
+        });
+
 
 
         setSupportActionBar(binding.toolBar);
@@ -79,26 +100,49 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateDate() {
-        binding.currentDate.setText(Helper.formatDate(calendar.getTimeInMillis()));
-        loadAllTransactions(); // load all transactions, no filtering
+    public void updateToolbarTitle(String title) {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
-    private void loadAllTransactions() {
-        transactionsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void updateDate() {
+        binding.currentDate.setText(Helper.formatDate(calendar.getTimeInMillis()));
+        loadTransactionsForDate(calendar.getTimeInMillis());
+    }
+
+    private ValueEventListener transactionsListener;
+
+    private void loadTransactionsForDate(long selectedDateMillis) {
+        if (transactionsListener != null) {
+            transactionsRef.removeEventListener(transactionsListener);
+        }
+
+        transactionsListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 transactionsList.clear();
 
-                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                    Object raw = childSnapshot.getValue();
-                    Log.d("RAW_FIREBASE_DATA", "Snapshot: " + raw);
+                Calendar selected = Calendar.getInstance();
+                selected.setTimeInMillis(selectedDateMillis);
+                int selectedYear = selected.get(Calendar.YEAR);
+                int selectedMonth = selected.get(Calendar.MONTH);
+                int selectedDay = selected.get(Calendar.DAY_OF_MONTH);
 
+                for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                     try {
                         Transactions transaction = childSnapshot.getValue(Transactions.class);
                         if (transaction != null) {
-                            transactionsList.add(transaction);
-                            Log.d("TRANSACTION_DEBUG", "Transaction: " + transaction.getNote());
+                            Calendar txnCal = Calendar.getInstance();
+                            txnCal.setTimeInMillis(transaction.getDate());
+
+                            int txnYear = txnCal.get(Calendar.YEAR);
+                            int txnMonth = txnCal.get(Calendar.MONTH);
+                            int txnDay = txnCal.get(Calendar.DAY_OF_MONTH);
+
+                            if (txnYear == selectedYear && txnMonth == selectedMonth && txnDay == selectedDay) {
+                                transactionsList.add(transaction);
+                            }
                         }
                     } catch (Exception e) {
                         Log.e("DESERIALIZATION_ERROR", "Error parsing transaction: " + e.getMessage());
@@ -114,8 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Error loading transactions", Toast.LENGTH_SHORT).show();
                 Log.e("TRANSACTION_DEBUG", "Firebase Error: " + error.getMessage());
             }
-        });
+        };
+
+        transactionsRef.addValueEventListener(transactionsListener);
     }
+
+
 
 
 
@@ -144,4 +192,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.top_menu, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
+
 }

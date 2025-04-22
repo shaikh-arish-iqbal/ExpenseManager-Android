@@ -131,7 +131,7 @@
                 android:layout_marginTop="3dp"
                 android:gravity="center"
                 android:text="0.0"
-                android:textColor="#43A047" />
+                android:textColor="@color/greenColor" />
         </LinearLayout>
 
         <LinearLayout
@@ -157,7 +157,7 @@
                 android:gravity="center"
                 android:shadowColor="#43A047"
                 android:text="0.0"
-                android:textColor="#E53935" />
+                android:textColor="@color/redColor" />
         </LinearLayout>
 
         <LinearLayout
@@ -219,6 +219,7 @@
         android:id="@+id/transactionsList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="4dp"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

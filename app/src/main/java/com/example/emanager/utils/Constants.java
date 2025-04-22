@@ -6,8 +6,8 @@ import com.example.emanager.R;
 import java.util.ArrayList;
 
 public class Constants {
-    public static String INCOME = "INCOME";
-    public static String EXPENSE = "EXPENSE";
+    public static String INCOME = "Income";
+    public static String EXPENSE = "Expense";
 
     public static ArrayList<Category> categories;
 

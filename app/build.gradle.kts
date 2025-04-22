@@ -43,6 +43,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation ("com.google.firebase:firebase-database:21.0.0")
     implementation ("com.google.firebase:firebase-auth:22.3.1") // or latest version
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     implementation(libs.appcompat)
     implementation(libs.material)
